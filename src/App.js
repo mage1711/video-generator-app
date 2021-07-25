@@ -1,39 +1,115 @@
-import { FormEvent, useState } from 'react'
+import { Fragment, useState, useEffect } from 'react'
 import axios from 'axios';
 import result from 'autoprefixer/data/prefixes';
 
 function App() {
+  const [list,setList] = useState()
   const [url, seturl] = useState('')
   const [videoUrl, setvideoUrl] = useState('')
-  
+  const [loading,setLoading] = useState(false)
+  const [buttonText,setButtonText] = useState('Generate')
+  const demo1 = "https://www.metacritic.com/browse/games/score/metascore/year/ps5/filtered?view=condensed"
+  const demo2 = "https://www.metacritic.com/browse/games/score/metascore/year/xbox-series-x/filtered?view=condensed"
+//   useEffect( () => {
+//    console.log(list)
+// },[list]);
+useEffect( () => {
+  console.log(videoUrl)
+  setLoading(false)
+},[videoUrl]);
+
+const generateVideo = async()=>{
+  setButtonText("generating video")
+
+  try {
+   
+    const res = await axios.post('http://159.65.127.119:8080/generate', list)
+    // const res = await axios.post('http://localhost:8080/generate', list)
+
+    console.log(res.data)
+    setvideoUrl(res.data)
+    setButtonText("Done")
+  } catch (err) {
+    setButtonText("Failed")
+    setLoading(false)
+    console.error(err)
+
+  }
+
+}
+const fetchList = async() =>{
+  console.log(url)
+  if (url.length > 0) {
+    console.log("sending")
+  setLoading(true)
+  setButtonText("scraping list")
+      try {
+        const res = await axios.post('https://flask-scrapers.herokuapp.com/scrap', {
+       url
+        })
+        console.log(res)
+        console.log(res.data)
+        setList(res.data)
+        generateVideo()
+      } catch (err) {
+        setButtonText("Failed")
+        setLoading(false)
+          console.error(err)
+      }
+    }
+  else {
+    setButtonText("empty field")
+  }
+}
   const submitForm = async (event) => {
     event.preventDefault()
-    console.log("sending")
-console.log(url)
-    try {
-      const res = await axios.post('https://flask-scrapers.herokuapp.com/scrap', {
-     url
-      })
-      console.log(res)
-      console.log(res.data)
-    } catch (err) {
-      console.error(err)
-    }
-  }
+   fetchList()
+
+}
+
+const handleDemo1 = (e) => {
+
+  console.log("demo 1")
+  seturl(demo1)
+}
+
+
+const handleDemo2 = (e) => {
+  console.log("demo 2")
+  seturl(demo2)
+}
 
   return (
     <div className="App">
 <div class="h-screen bg-green-900 flex justify-center items-center">
-  <form onSubmit={submitForm} class="w-full max-w-xs bg-white flex flex-col py-5 px-8 rounded-lg shadow-lg" >
+  <form onSubmit={submitForm} class="w-full max-w-screen-sm bg-white flex flex-col py-5 px-8 rounded-lg shadow-lg" >
     <label class="text-gray-700 font-bold py-2" for="link">Link</label>
     <input  value= {url} onChange={(e) => seturl(e.target.value)} class="text-gray-700 shadow border rounded border-gray-300 focus:outline-none focus:shadow-outline py-2 px-3 mb-3" type="text" placeholder="Link" />
-    <div class="flex justify-center items-center my-4">
-      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded py-2 px-4" type='submit'>
-        Generate
-      </button>
+    <div class="flex justify-center items-center my-4 space-x-4">
+     { loading ?(<button class="bg-green-500 hover:bg-green-700 text-white content-center font-bold rounded py-2 px-4 cursor-not-allowed " type='submit' disabled = {loading} >
+      <svg class="animate-spin  h-10 w-10 text-white" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+   {buttonText}
+      </button>):(
+        <Fragment>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded py-2 px-4 " type='submit' disabled = {loading} >
+     {buttonText}
+        </button>
+                <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold rounded py-2 px-4" onClick={handleDemo1}  disabled = {loading} >
+               Demo 1
+                   </button>
+                           <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold rounded py-2 px-4 " onClick={handleDemo2}  disabled = {loading} >
+                         Demo 2
+                        </button>
+                              </Fragment>
+      )}
     </div>
-    
+    <video width="750" height="500" controls src={videoUrl} >
+</video>
   </form>
+
 </div>
 
     </div>
