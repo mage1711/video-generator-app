@@ -10,9 +10,10 @@ function App() {
   const [buttonText,setButtonText] = useState('Generate')
   const demo1 = "https://www.metacritic.com/browse/games/score/metascore/year/ps5/filtered?view=condensed"
   const demo2 = "https://www.metacritic.com/browse/games/score/metascore/year/xbox-series-x/filtered?view=condensed"
-//   useEffect( () => {
-//    console.log(list)
-// },[list]);
+  useEffect( () => {
+   console.log(list)
+   generateVideo()
+},[list]);
 useEffect( () => {
   console.log(videoUrl)
   setLoading(false)
@@ -24,6 +25,7 @@ const generateVideo = async()=>{
   try {
    
     const res = await axios.post('https://video-editor-go-server-qyx5x.ondigitalocean.app/generate', list)
+    console.log("this is the list ",list)
     // const res = await axios.post('http://localhost:8080/generate', list)
 
     console.log(res.data)
@@ -50,7 +52,7 @@ const fetchList = async() =>{
         console.log(res)
         console.log(res.data)
         setList(res.data)
-        generateVideo()
+
       } catch (err) {
         setButtonText("Failed")
         setLoading(false)
@@ -63,20 +65,22 @@ const fetchList = async() =>{
 }
   const submitForm = async (event) => {
     event.preventDefault()
+    console.log(event.type)
    fetchList()
 
 }
 
-const handleDemo1 = (e) => {
-
+const handleDemo1 =  async (e) => {
   console.log("demo 1")
   seturl(demo1)
+  fetchList()
 }
 
 
-const handleDemo2 = (e) => {
+const handleDemo2 = async (e) => {
   console.log("demo 2")
   seturl(demo2)
+  fetchList()
 }
 
   return (
@@ -97,10 +101,10 @@ const handleDemo2 = (e) => {
         <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded py-2 px-4 " type='submit' disabled = {loading} >
      {buttonText}
         </button>
-                <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold rounded py-2 px-4" onClick={handleDemo1}  disabled = {loading} >
+                <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold rounded py-2 px-4" onClick={handleDemo1} type="button"  disabled = {loading} >
                Demo 1
                    </button>
-                           <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold rounded py-2 px-4 " onClick={handleDemo2}  disabled = {loading} >
+                           <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold rounded py-2 px-4 " onClick={handleDemo2} type="button" disabled = {loading} >
                          Demo 2
                         </button>
                               </Fragment>
