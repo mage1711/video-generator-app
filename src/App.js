@@ -3,6 +3,10 @@ import axios from 'axios';
 
 
 function App() {
+  useEffect( () => {
+    console.log(list)
+    generateVideo()
+ },[list]);
   const [list,setList] = useState()
   const [url, seturl] = useState('')
   const [videoUrl, setvideoUrl] = useState('')
@@ -10,10 +14,7 @@ function App() {
   const [buttonText,setButtonText] = useState('Generate')
   const demo1 = "https://www.metacritic.com/browse/games/score/metascore/year/ps5/filtered?view=condensed"
   const demo2 = "https://www.metacritic.com/browse/games/score/metascore/year/xbox-series-x/filtered?view=condensed"
-  useEffect( () => {
-   console.log(list)
-   generateVideo()
-},[list]);
+
 useEffect( () => {
   console.log(videoUrl)
   setLoading(false)
