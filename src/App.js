@@ -1,6 +1,6 @@
 import { Fragment, useState, useEffect } from 'react'
 import axios from 'axios';
-import result from 'autoprefixer/data/prefixes';
+
 
 function App() {
   const [list,setList] = useState()
