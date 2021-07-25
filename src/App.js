@@ -12,33 +12,34 @@ function App() {
   const demo2 = "https://www.metacritic.com/browse/games/score/metascore/year/xbox-series-x/filtered?view=condensed"
   useEffect( () => {
    console.log(list)
-   generateVideo()
-},[list,generateVideo]);
+   const generateVideo = async()=>{
+    setButtonText("generating video")
+  
+    try {
+     
+      const res = await axios.post('https://video-editor-go-server-qyx5x.ondigitalocean.app/generate', list)
+      console.log("this is the list ",list)
+      // const res = await axios.post('http://localhost:8080/generate', list)
+  
+      console.log(res.data)
+      setvideoUrl(res.data)
+      setButtonText("Done")
+    } catch (err) {
+      setButtonText("Failed")
+      setLoading(false)
+      console.error(err)
+  
+    }
+  
+  }
+  generateVideo()
+},[list]);
 useEffect( () => {
   console.log(videoUrl)
   setLoading(false)
 },[videoUrl]);
 
-const generateVideo = async()=>{
-  setButtonText("generating video")
 
-  try {
-   
-    const res = await axios.post('https://video-editor-go-server-qyx5x.ondigitalocean.app/generate', list)
-    console.log("this is the list ",list)
-    // const res = await axios.post('http://localhost:8080/generate', list)
-
-    console.log(res.data)
-    setvideoUrl(res.data)
-    setButtonText("Done")
-  } catch (err) {
-    setButtonText("Failed")
-    setLoading(false)
-    console.error(err)
-
-  }
-
-}
 const fetchList = async() =>{
   console.log(url)
   if (url.length > 0) {
