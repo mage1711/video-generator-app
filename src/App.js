@@ -23,7 +23,7 @@ const generateVideo = async()=>{
 
   try {
    
-    const res = await axios.post('http://159.65.127.119:8080/generate', list)
+    const res = await axios.post('https://video-editor-go-server-qyx5x.ondigitalocean.app/generate', list)
     // const res = await axios.post('http://localhost:8080/generate', list)
 
     console.log(res.data)
