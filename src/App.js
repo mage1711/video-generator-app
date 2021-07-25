@@ -33,6 +33,7 @@ function App() {
   
   }
   generateVideo()
+  seturl('')
 },[list]);
 useEffect( () => {
   console.log(videoUrl)
