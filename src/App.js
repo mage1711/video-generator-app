@@ -1,6 +1,6 @@
 import { Fragment, useState, useEffect } from 'react'
 import axios from 'axios';
-
+import Modal from "./Modal"
 
 function App() {
   const [list,setList] = useState()
@@ -14,7 +14,7 @@ function App() {
    console.log(list)
    const generateVideo = async()=>{
     setButtonText("generating video")
-  
+  if (list) {
     try {
      
       const res = await axios.post('https://video-editor-go-server-qyx5x.ondigitalocean.app/generate', list)
@@ -30,6 +30,7 @@ function App() {
       console.error(err)
   
     }
+  }
   
   }
   generateVideo()
@@ -48,6 +49,7 @@ const fetchList = async() =>{
   setLoading(true)
   setButtonText("scraping list")
       try {
+
         const res = await axios.post('https://flask-scrapers.herokuapp.com/scrap', {
        url
         })
@@ -109,6 +111,7 @@ const handleDemo2 = async (e) => {
                            <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold rounded py-2 px-4 " onClick={handleDemo2} type="button" disabled = {loading} >
                          Demo 2
                         </button>
+                        <Modal/>
                               </Fragment>
       )}
     </div>
@@ -117,8 +120,18 @@ const handleDemo2 = async (e) => {
   </form>
 
 </div>
+<footer class='p-6 text-white bg-black'>
+<address>
+  <p class='mb-2 hover:opacity-50'>email: <a href="mailto:ziad.abdelrahman.ibrahim@gmail.com">ziad.abdelrahman.ibrahim@gmail.com</a></p>
+<p class='mb-1'>source code for the page:<a href='https://github.com/mage1711/video-generator-app' class= "ml-4 hover:opacity-50">Front-end</a> 
+<a href='https://github.com/mage1711/videoEditorGoServer' class= "ml-4 hover:opacity-50">Video generation backend</a> 
+<a href='https://github.com/mage1711/flask-scrapers-api' class= "ml-4 hover:opacity-50">List scrapper</a> </p> 
+<p class="mt-2">If you have any questions you can send me an email or pm me on <a href='https://twitter.com/mage_1711' class= " ml-1 hover:text-blue-400">twitter</a></p>
 
+  </address>
+</footer>
     </div>
+    
   );
 }
 
