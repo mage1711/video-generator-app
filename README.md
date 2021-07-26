@@ -9,7 +9,7 @@
   <p align="center">
     An app for video generation using Goland and flask using metacritic lists
     <br />
-    <a href="https://quirky-sinoussi-4ffbc4.netlify.app/">View Demo</a>
+    <a href="https://video-generator-app.vercel.app/">View Demo</a>
   </p>
 </p>
 
