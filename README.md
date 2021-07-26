@@ -20,6 +20,10 @@
 ## About The Project
 This app was Buit to give users the ability to generate videos using a list from https://www.metacritic.com/
 
+## Project components
+* [Video generator](https://github.com/mage1711/videoEditorGoServer)
+* [Scraper](https://github.com/mage1711/flask-scrapers-api)
+* [UI](https://github.com/mage1711/video-generator-app)
 
 
 
