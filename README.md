@@ -19,6 +19,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 This app was Buit to give users the ability to generate videos using a list from https://www.metacritic.com/
+
 example output: https://www.youtube.com/watch?v=YfKFyTBOuEA&ab_channel=EGGamers
 
 ## Project components
